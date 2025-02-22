@@ -3,19 +3,21 @@ import { PlayerList } from './components/PlayerList';
 import { GameCreator } from './components/GameCreator';
 import { GameList } from './components/GameList';
 import { Leaderboard } from './components/Leaderboard';
-import { PlayerSearch } from './components/PlayerSearch';
 import { PlayerStats } from './components/PlayerStats';
-import type { Player, Game, GamePlayer } from './types';
+import { RecentWinners } from './components/RecentWinners';
+import type { Player, Game } from './types';
 
 function App() {
   const [players, setPlayers] = useState<Player[]>(() => {
     const saved = localStorage.getItem('players');
     return saved ? JSON.parse(saved) : [];
   });
+  
   const [games, setGames] = useState<Game[]>(() => {
     const saved = localStorage.getItem('games');
     return saved ? JSON.parse(saved) : [];
   });
+  
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
 
   useEffect(() => {
@@ -33,23 +35,15 @@ function App() {
     }]);
   };
 
-  const handleEditPlayer = (id: string, newUsername: string) => {
-    setPlayers(prev => prev.map(player =>
-      player.id === id ? { ...player, username: newUsername } : player
-    ));
-  };
-
-  const handleDeletePlayer = (id: string) => {
-    setPlayers(prev => prev.filter(player => player.id !== id));
-  };
-
-  const handleCreateGame = (gamePlayers: GamePlayer[]) => {
+  const handleCreateGame = (gamePlayers: { playerId: string, color: string }[]) => {
     const newGame: Game = {
       id: crypto.randomUUID(),
-      date: new Date().toLocaleDateString(),
+      date: new Date().toISOString(),
       players: gamePlayers,
       winnerId: null,
-      isFinished: false
+      isFinished: false,
+      startTime: new Date().toISOString(),
+      endTime: null
     };
     
     setGames(prev => [...prev, newGame]);
@@ -62,7 +56,14 @@ function App() {
 
   const handleFinishGame = (gameId: string, winnerId: string) => {
     setGames(prev => prev.map(game =>
-      game.id === gameId ? { ...game, winnerId, isFinished: true } : game
+      game.id === gameId 
+        ? { 
+            ...game, 
+            winnerId, 
+            isFinished: true,
+            endTime: new Date().toISOString()
+          } 
+        : game
     ));
     
     setPlayers(prev => prev.map(player => ({
@@ -78,41 +79,46 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <div className="max-w-6xl mx-auto space-y-8">
-        <h1 className="text-4xl font-bold text-center mb-12 text-gray-800">
-          Catan Leaderboard
-        </h1>
-        
-        <Leaderboard players={players} />
-        
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <PlayerSearch
+    <div className="container mx-auto p-4">
+      <h1 className="text-4xl font-bold text-center mb-8">Catan Leaderboard</h1>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="space-y-6">
+          <PlayerList
             players={players}
-            onToggleFavorite={handleToggleFavorite}
-            onSelectPlayer={setSelectedPlayer}
             onAddPlayer={handleAddPlayer}
+            onSelectPlayer={setSelectedPlayer}
+            onToggleFavorite={handleToggleFavorite}
           />
-          
           <GameCreator
             players={players}
             onCreateGame={handleCreateGame}
           />
         </div>
-        
-        <GameList
-          games={games}
-          players={players}
-          onFinishGame={handleFinishGame}
-        />
 
-        {selectedPlayer && (
-          <PlayerStats
-            player={selectedPlayer}
+        <div className="space-y-6">
+          <GameList
             games={games}
-            onClose={() => setSelectedPlayer(null)}
+            players={players}
+            onFinishGame={handleFinishGame}
           />
-        )}
+          <RecentWinners
+            games={games}
+            players={players}
+          />
+        </div>
+
+        <div className="space-y-6">
+          <Leaderboard players={players} />
+          {selectedPlayer && (
+            <PlayerStats
+              player={selectedPlayer}
+              games={games}
+              players={players}
+              onClose={() => setSelectedPlayer(null)}
+            />
+          )}
+        </div>
       </div>
     </div>
   );

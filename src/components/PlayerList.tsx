@@ -1,98 +1,104 @@
 import React, { useState } from 'react';
-import { Plus, Edit2, Trash2 } from 'lucide-react';
+import { Star, Plus, User } from 'lucide-react';
 import type { Player } from '../types';
 
 interface PlayerListProps {
   players: Player[];
-  onAddPlayer: (username: string) => void;
-  onEditPlayer: (id: string, newUsername: string) => void;
-  onDeletePlayer: (id: string) => void;
+  onAddPlayer: (name: string) => void;
+  onSelectPlayer: (player: Player) => void;
+  onToggleFavorite: (playerId: string) => void;
 }
 
-export function PlayerList({ players, onAddPlayer, onEditPlayer, onDeletePlayer }: PlayerListProps) {
-  const [newUsername, setNewUsername] = useState('');
-  const [editingId, setEditingId] = useState<string | null>(null);
-  const [editUsername, setEditUsername] = useState('');
+export function PlayerList({ players, onAddPlayer, onSelectPlayer, onToggleFavorite }: PlayerListProps) {
+  const [newPlayerName, setNewPlayerName] = useState('');
+  const [isAdding, setIsAdding] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (newUsername.trim()) {
-      onAddPlayer(newUsername.trim());
-      setNewUsername('');
+    if (newPlayerName.trim()) {
+      onAddPlayer(newPlayerName.trim());
+      setNewPlayerName('');
+      setIsAdding(false);
     }
   };
 
-  const handleEdit = (id: string) => {
-    const player = players.find(p => p.id === id);
-    if (player) {
-      setEditingId(id);
-      setEditUsername(player.username);
+  const sortedPlayers = [...players].sort((a, b) => {
+    if (a.isFavorite === b.isFavorite) {
+      return a.username.localeCompare(b.username);
     }
-  };
-
-  const handleSaveEdit = (id: string) => {
-    if (editUsername.trim()) {
-      onEditPlayer(id, editUsername.trim());
-      setEditingId(null);
-    }
-  };
+    return a.isFavorite ? -1 : 1;
+  });
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
-      <h2 className="text-2xl font-bold mb-4">Players</h2>
-      
-      <form onSubmit={handleSubmit} className="mb-6 flex gap-2">
-        <input
-          type="text"
-          value={newUsername}
-          onChange={(e) => setNewUsername(e.target.value)}
-          placeholder="Enter player name"
-          className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+    <div className="bg-white rounded-2xl shadow-lg p-6">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-xl font-bold text-gray-900">Player Stats</h2>
         <button
-          type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 flex items-center gap-2"
+          onClick={() => setIsAdding(true)}
+          className="text-sm px-3 py-1.5 bg-indigo-50 text-indigo-600 rounded-lg hover:bg-indigo-100 transition-colors flex items-center gap-1.5"
         >
-          <Plus size={20} /> Add Player
+          <Plus size={14} />
+          Add Player
         </button>
-      </form>
+      </div>
 
-      <div className="space-y-4">
-        {players.map((player) => (
-          <div key={player.id} className="flex items-center justify-between bg-gray-50 p-4 rounded-lg">
-            {editingId === player.id ? (
-              <input
-                type="text"
-                value={editUsername}
-                onChange={(e) => setEditUsername(e.target.value)}
-                onBlur={() => handleSaveEdit(player.id)}
-                onKeyPress={(e) => e.key === 'Enter' && handleSaveEdit(player.id)}
-                className="px-3 py-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                autoFocus
-              />
-            ) : (
-              <div>
-                <h3 className="font-semibold">{player.username}</h3>
-                <p className="text-sm text-gray-600">
-                  Games: {player.gamesPlayed} | Win Rate: {player.gamesPlayed ? ((player.gamesWon / player.gamesPlayed) * 100).toFixed(1) : 0}%
-                </p>
+      {isAdding && (
+        <form onSubmit={handleSubmit} className="mb-4">
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={newPlayerName}
+              onChange={(e) => setNewPlayerName(e.target.value)}
+              placeholder="Player name"
+              className="flex-1 rounded-lg border-gray-200 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              autoFocus
+            />
+            <button
+              type="submit"
+              className="px-3 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors"
+            >
+              Add
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setIsAdding(false);
+                setNewPlayerName('');
+              }}
+              className="px-3 py-2 bg-gray-100 text-gray-600 text-sm font-medium rounded-lg hover:bg-gray-200 transition-colors"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      )}
+
+      <div className="space-y-2">
+        {sortedPlayers.map(player => (
+          <div 
+            key={player.id}
+            onClick={() => onSelectPlayer(player)}
+            className="flex items-center justify-between p-2.5 hover:bg-gray-50 rounded-lg cursor-pointer group transition-colors"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-gray-500">
+                <User size={16} />
               </div>
-            )}
-            
-            <div className="flex gap-2">
-              <button
-                onClick={() => handleEdit(player.id)}
-                className="p-2 text-gray-600 hover:text-blue-500"
-              >
-                <Edit2 size={20} />
-              </button>
-              <button
-                onClick={() => onDeletePlayer(player.id)}
-                className="p-2 text-gray-600 hover:text-red-500"
-              >
-                <Trash2 size={20} />
-              </button>
+              <span className="font-medium text-gray-900">{player.username}</span>
             </div>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onToggleFavorite(player.id);
+              }}
+              className={`p-1 rounded-md transition-colors ${
+                player.isFavorite 
+                  ? 'text-amber-400 hover:bg-amber-50' 
+                  : 'text-gray-400 hover:bg-gray-100 opacity-0 group-hover:opacity-100'
+              }`}
+            >
+              <Star size={16} fill={player.isFavorite ? "currentColor" : "none"} />
+            </button>
           </div>
         ))}
       </div>

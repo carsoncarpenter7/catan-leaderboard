@@ -12,6 +12,8 @@ export interface Game {
   players: GamePlayer[];
   winnerId: string | null;
   isFinished: boolean;
+  startTime: string;
+  endTime: string | null;
 }
 
 export interface GamePlayer {

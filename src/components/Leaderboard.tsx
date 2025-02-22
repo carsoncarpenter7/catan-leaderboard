@@ -8,9 +8,7 @@ interface LeaderboardProps {
 
 export function Leaderboard({ players }: LeaderboardProps) {
   const sortedPlayers = [...players].sort((a, b) => {
-    const aWinRate = a.gamesPlayed ? (a.gamesWon / a.gamesPlayed) : 0;
-    const bWinRate = b.gamesPlayed ? (b.gamesWon / b.gamesPlayed) : 0;
-    return bWinRate - aWinRate;
+    return b.gamesWon - a.gamesWon;
   });
 
   const top3 = sortedPlayers.slice(0, 3);
@@ -31,7 +29,7 @@ export function Leaderboard({ players }: LeaderboardProps) {
             </div>
             <div className="w-32 h-[160px] bg-gradient-to-b from-gray-100 to-gray-200 rounded-t-lg flex flex-col items-center justify-end p-4">
               <span className="font-bold text-lg text-gray-800">{second.username}</span>
-              <span className="text-sm text-gray-600">{(second.gamesWon / second.gamesPlayed * 100).toFixed(1)}%</span>
+              <span className="text-sm text-gray-600">{second.gamesWon} wins</span>
             </div>
           </div>
         )}
@@ -46,7 +44,7 @@ export function Leaderboard({ players }: LeaderboardProps) {
             </div>
             <div className="w-40 h-[200px] bg-gradient-to-b from-yellow-50 to-yellow-100 rounded-t-lg flex flex-col items-center justify-end p-4">
               <span className="font-bold text-xl text-gray-800">{first.username}</span>
-              <span className="text-sm text-gray-600">{(first.gamesWon / first.gamesPlayed * 100).toFixed(1)}%</span>
+              <span className="text-sm text-gray-600">{first.gamesWon} wins</span>
             </div>
           </div>
         )}
@@ -61,7 +59,7 @@ export function Leaderboard({ players }: LeaderboardProps) {
             </div>
             <div className="w-32 h-[120px] bg-gradient-to-b from-amber-50 to-amber-100 rounded-t-lg flex flex-col items-center justify-end p-4">
               <span className="font-bold text-lg text-gray-800">{third.username}</span>
-              <span className="text-sm text-gray-600">{(third.gamesWon / third.gamesPlayed * 100).toFixed(1)}%</span>
+              <span className="text-sm text-gray-600">{third.gamesWon} wins</span>
             </div>
           </div>
         )}
