@@ -16,7 +16,8 @@ git push origin main
 
 Catan Leaderboard is a modern web application designed to track and manage player statistics, game results, and rankings for Settlers of Catan games. Whether you're organizing regular game nights or running tournaments, this application helps you maintain a comprehensive record of player performances and competitive standings.
 
-![Catan Leaderboard Dashboard](https://images.unsplash.com/photo-1637425141051-46aec2f7bc65?w=1200&h=600&fit=crop)
+![Catan Leaderboard Dashboard](https://gyazo.com/6baf37e3b573e5ee894e1d652504575f)
+
 
 ## ✨ Features
 
@@ -24,26 +25,27 @@ Catan Leaderboard is a modern web application designed to track and manage playe
   - Create and manage player profiles
   - Track individual player statistics
   - View player history and performance trends
+ 
+  ![Player Stats](https://gyazo.com/0c2e02dc800ef59ce0a50e93018d6b9b) 
 
 - **Game Tracking**
   - Record game results and outcomes
   - Track victory points, longest road, and largest army achievements
   - Log resource collection and trading statistics
+ 
+  ![Recent Games](https://gyazo.com/387c201735d7e5cac1a8016c408aede8)
 
 - **Leaderboard System**
   - Real-time rankings based on player performance
   - Multiple ranking criteria (wins, VP ratio, etc.)
   - Historical ranking trends
 
-- **Tournament Support**
-  - Create and manage tournaments
-  - Automatic bracket generation
-  - Tournament-specific leaderboards
-
 - **Analytics Dashboard**
   - Visual statistics and charts
   - Player performance comparisons
   - Game duration and outcome analysis
+ 
+![Game History]([https://gyazo.com/387c201735d7e5cac1a8016c408aede8)
 
 ## 🛠 Technologies Used
 
@@ -90,68 +92,19 @@ Catan Leaderboard is a modern web application designed to track and manage playe
 
 ## 🎮 Usage Instructions
 
-1. **User Registration/Login**
-   - Create an account or log in using existing credentials
-   - Complete your player profile
-
-2. **Recording Games**
+1. **Recording Games**
    - Click "New Game" to start recording a game session
    - Add players and their respective positions
    - Input game results and statistics
    - Submit to update leaderboard
 
-3. **Viewing Statistics**
+2. **Viewing Statistics**
    - Navigate to the Dashboard for overall statistics
    - Visit player profiles for individual performance
    - Use filters to analyze specific time periods or game types
-
-## 🔌 API Documentation
-
-### Authentication Endpoints
-
-```typescript
-POST /api/auth/register
-POST /api/auth/login
-POST /api/auth/logout
-```
-
-### Player Endpoints
-
-```typescript
-GET /api/players
-GET /api/players/:id
-POST /api/players
-PUT /api/players/:id
-```
-
-### Game Endpoints
-
-```typescript
-GET /api/games
-POST /api/games
-GET /api/games/:id
-PUT /api/games/:id
-```
-
-
-## 🤝 Contributing Guidelines
-
-We welcome contributions! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-Please ensure your PR:
-- Follows the existing code style
-- Includes appropriate tests
-- Updates documentation as needed
-- Describes the changes made
+   - Extensive Game History to track all games and previous winers and losers.
 
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 📞 Contact Informat
