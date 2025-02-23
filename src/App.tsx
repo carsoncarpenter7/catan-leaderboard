@@ -144,18 +144,71 @@ function App() {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      {/* Header Section */}
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-4xl font-bold">Catan Leaderboard</h1>
-        <button
-          onClick={() => setShowGameCreator(true)}
-          className="text-sm pl-3 pr-4 py-2 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white rounded-lg 
-            hover:from-indigo-600 hover:to-indigo-700 transition-all duration-200 font-medium shadow-sm 
-            hover:shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-        >
-          Start New Game
-        </button>
+    <div className="container mx-auto p-4 flex">
+      {/* Left side for other components */}
+      <div className="flex-1">
+        {/* Header Section */}
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-4xl font-bold">Catan Leaderboard</h1>
+          <button
+            onClick={() => setShowGameCreator(true)}
+            className="text-sm pl-3 pr-4 py-2 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white rounded-lg 
+              hover:from-indigo-600 hover:to-indigo-700 transition-all duration-200 font-medium shadow-sm 
+              hover:shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          >
+            Start New Game
+          </button>
+        </div>
+
+        {/* Main Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Top Players Leaderboard at the top of all columns */}
+          <div className="col-span-1 md:col-span-2 lg:col-span-2 mb-6">
+            <Leaderboard players={players} />
+          </div>
+
+          {/* Combined Streaks and Winners Column */}
+          <div className="col-span-1 md:col-span-1 lg:col-span-1 mb-6">
+            <StreaksAndWinners games={games} players={players} />
+          </div>
+
+          {/* Game History directly below Recent Winners */}
+          <div className="col-span-2 md:col-span-2 lg:col-span-2 mb-6">
+            <GameList
+              games={games}
+              players={players}
+              onFinishGame={handleFinishGame}
+              onEditWinner={handleEditWinner}
+            />
+          </div>
+
+          {/* Left Column for Player List */}
+          <div className="space-y-6">
+            <PlayerList
+              players={players}
+              onAddPlayer={handleAddPlayer}
+              onSelectPlayer={setSelectedPlayer}
+              onToggleFavorite={handleToggleFavorite}
+            />
+          </div>
+
+          {/* Right Column for Player Stats */}
+          <div className="space-y-6 flex flex-col items-end">
+            <div className="mb-4">
+              {selectedPlayer && (
+                <PlayerStats
+                  player={selectedPlayer}
+                  games={games.map(game => ({
+                    ...game,
+                    date: formatDate(game.date)
+                  }))}
+                  players={players}
+                  onClose={() => setSelectedPlayer(null)}
+                />
+              )}
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Game Creator Modal */}
@@ -180,56 +233,6 @@ function App() {
           </div>
         </div>
       )}
-      
-      {/* Main Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {/* Top Players Leaderboard at the top of all columns */}
-        <div className="col-span-1 md:col-span-2 lg:col-span-2 mb-6">
-          <Leaderboard players={players} />
-        </div>
-
-        {/* Combined Streaks and Winners Column */}
-        <div className="col-span-1 md:col-span-1 lg:col-span-1 mb-6">
-          <StreaksAndWinners games={games} players={players} />
-        </div>
-
-        {/* Left Column */}
-        <div className="space-y-6">
-          <PlayerList
-            players={players}
-            onAddPlayer={handleAddPlayer}
-            onSelectPlayer={setSelectedPlayer}
-            onToggleFavorite={handleToggleFavorite}
-          />
-        </div>
-
-        {/* Right Column */}
-        <div className="space-y-6 flex flex-col items-end">
-          <div className="mb-4">
-            {selectedPlayer && (
-              <PlayerStats
-                player={selectedPlayer}
-                games={games.map(game => ({
-                  ...game,
-                  date: formatDate(game.date)
-                }))}
-                players={players}
-                onClose={() => setSelectedPlayer(null)}
-              />
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Game History at the bottom */}
-      <div className="mt-8">
-        <GameList
-          games={games}
-          players={players}
-          onFinishGame={handleFinishGame}
-          onEditWinner={handleEditWinner}
-        />
-      </div>
     </div>
   );
 }
