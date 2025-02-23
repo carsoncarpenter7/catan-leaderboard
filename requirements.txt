@@ -1,9 +1,9 @@
 appdirs==1.4.4
 attrs==23.2.0
 beautifulsoup4==4.12.2
-boltons @ file:///home/conda/feedstock_root/build_artifacts/boltons_1677499911949/work
+boltons @ file:///home/conda/feedstock_root/build_artifacts/boltons_1733827268945/work
 Brotli @ file:///Users/runner/miniforge3/conda-bld/brotli-split_1693583518054/work
-certifi==2023.7.22
+certifi @ file:///home/conda/feedstock_root/build_artifacts/certifi_1739515848642/work/certifi
 cffi @ file:///Users/runner/miniforge3/conda-bld/cffi_1671179421243/work
 charset-normalizer @ file:///home/conda/feedstock_root/build_artifacts/charset-normalizer_1688813409104/work
 colorama @ file:///home/conda/feedstock_root/build_artifacts/colorama_1666700638685/work

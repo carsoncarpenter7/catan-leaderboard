@@ -73,35 +73,48 @@ export function PlayerList({ players, onAddPlayer, onSelectPlayer, onToggleFavor
         </form>
       )}
 
-      <div className="space-y-2">
-        {sortedPlayers.map(player => (
-          <div 
-            key={player.id}
-            onClick={() => onSelectPlayer(player)}
-            className="flex items-center justify-between p-2.5 hover:bg-gray-50 rounded-lg cursor-pointer group transition-colors"
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-gray-500">
-                <User size={16} />
-              </div>
-              <span className="font-medium text-gray-900">{player.username}</span>
-            </div>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onToggleFavorite(player.id);
-              }}
-              className={`p-1 rounded-md transition-colors ${
-                player.isFavorite 
-                  ? 'text-amber-400 hover:bg-amber-50' 
-                  : 'text-gray-400 hover:bg-gray-100 opacity-0 group-hover:opacity-100'
-              }`}
+      {/* Scrollable Player List */}
+      <div className="max-h-60 overflow-y-auto">
+        <div className="space-y-2">
+          {sortedPlayers.slice(0, 6).map(player => (
+            <div 
+              key={player.id}
+              onClick={() => onSelectPlayer(player)}
+              className="flex items-center justify-between p-2.5 hover:bg-gray-50 rounded-lg cursor-pointer group transition-colors"
             >
-              <Star size={16} fill={player.isFavorite ? "currentColor" : "none"} />
-            </button>
-          </div>
-        ))}
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-gray-500">
+                  <User size={16} />
+                </div>
+                <span className="font-medium text-gray-900">{player.username}</span>
+              </div>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onToggleFavorite(player.id);
+                }}
+                className={`p-1 rounded-md transition-colors ${
+                  player.isFavorite 
+                    ? 'text-amber-400 hover:bg-amber-50' 
+                    : 'text-gray-400 hover:bg-gray-100 opacity-0 group-hover:opacity-100'
+                }`}
+              >
+                <Star size={16} fill={player.isFavorite ? "currentColor" : "none"} />
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
+
+      {/* Show More Players Button */}
+      {sortedPlayers.length > 6 && (
+        <button
+          onClick={() => {/* Logic to show more players */}}
+          className="mt-4 w-full text-indigo-600 hover:underline"
+        >
+          Show More Players
+        </button>
+      )}
     </div>
   );
 }

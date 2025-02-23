@@ -1,6 +1,6 @@
 import React from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
-import { Clock } from 'lucide-react';
+import { Clock, X } from 'lucide-react';
 import type { Player, Game } from '../types';
 
 interface PlayerStatsProps {
@@ -140,95 +140,41 @@ export function PlayerStats({ player, games, players, onClose }: PlayerStatsProp
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 backdrop-blur-sm">
-      <div className="bg-white rounded-2xl shadow-xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="flex justify-between items-center mb-8">
+      <div className="bg-white rounded-2xl shadow-lg p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="flex justify-between items-center mb-6">
           <div>
-            <h2 className="text-2xl font-bold text-gray-800">{player.username}</h2>
-            <p className="text-gray-500">Player Statistics</p>
+            <h2 className="text-3xl font-semibold text-gray-800">{player.username}</h2>
+            <p className="text-gray-600">Player Statistics</p>
           </div>
           <button
             onClick={onClose}
-            className="text-gray-500 hover:text-gray-700 rounded-full hover:bg-gray-100 p-2 transition-colors"
+            className="text-gray-600 hover:text-gray-800 rounded-full hover:bg-gray-200 p-2 transition-colors"
           >
-            ✕
+            <X size={20} />
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6 shadow-sm">
-            <h3 className="text-sm text-blue-600 mb-2 font-medium">Games Played</h3>
-            <p className="text-3xl font-bold text-blue-900">{player.gamesPlayed}</p>
-          </div>
-          
-          <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-6 shadow-sm">
-            <h3 className="text-sm text-green-600 mb-2 font-medium">Games Won</h3>
-            <p className="text-3xl font-bold text-green-900">{player.gamesWon}</p>
-          </div>
-          
-          <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-6 shadow-sm">
-            <h3 className="text-sm text-orange-600 mb-2 font-medium">Longest Win Streak</h3>
-            <p className="text-3xl font-bold text-orange-900">{getLongestWinStreak()}</p>
-          </div>
-          
-          <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-6 shadow-sm">
-            <h3 className="text-sm text-purple-600 mb-2 font-medium">Win Rate</h3>
-            <p className="text-3xl font-bold text-purple-900">
-              {player.gamesPlayed ? ((player.gamesWon / player.gamesPlayed) * 100).toFixed(1) : 0}%
-            </p>
-          </div>
-
-          <div className="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-xl p-6 shadow-sm">
-            <h3 className="text-sm text-indigo-600 mb-2 font-medium">Fastest Win</h3>
-            <p className="text-3xl font-bold text-indigo-900">
-              {durationStats.shortest ? formatDuration(durationStats.shortest) : '-'}
-            </p>
-          </div>
-
-          <div className="bg-gradient-to-br from-rose-50 to-rose-100 rounded-xl p-6 shadow-sm">
-            <h3 className="text-sm text-rose-600 mb-2 font-medium">Longest Win</h3>
-            <p className="text-3xl font-bold text-rose-900">
-              {durationStats.longest ? formatDuration(durationStats.longest) : '-'}
-            </p>
-          </div>
-
-          <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-xl p-6 shadow-sm">
-            <h3 className="text-sm text-emerald-600 mb-2 font-medium">Average Game Duration</h3>
-            <p className="text-3xl font-bold text-emerald-900">
-              {durationStats.average ? formatDuration(durationStats.average) : '-'}
-            </p>
-          </div>
-
-          <div className="bg-gradient-to-br from-fuchsia-50 to-fuchsia-100 rounded-xl p-6 shadow-sm">
-            <h3 className="text-sm text-fuchsia-600 mb-2 font-medium">Best Color</h3>
-            <div className="flex items-center gap-2">
-              <div 
-                className="w-4 h-4 rounded-full"
-                style={{ backgroundColor: bestColor || 'gray' }}
-              />
-              <p className="text-3xl font-bold text-fuchsia-900">
-                {bestColorWins} wins
-              </p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          {[
+            { title: 'Games Played', value: player.gamesPlayed, color: 'blue' },
+            { title: 'Games Won', value: player.gamesWon, color: 'green' },
+            { title: 'Longest Win Streak', value: getLongestWinStreak(), color: 'orange' },
+            { title: 'Win Rate', value: player.gamesPlayed ? ((player.gamesWon / player.gamesPlayed) * 100).toFixed(1) : 0, color: 'purple' },
+            { title: 'Fastest Win', value: durationStats.shortest ? formatDuration(durationStats.shortest) : '-', color: 'indigo' },
+            { title: 'Longest Win', value: durationStats.longest ? formatDuration(durationStats.longest) : '-', color: 'rose' },
+            { title: 'Average Game Duration', value: durationStats.average ? formatDuration(durationStats.average) : '-', color: 'emerald' },
+            { title: 'Best Color', value: bestColorWins, color: 'fuchsia' },
+            { title: 'Favorite Color', value: favoriteColorStats ? favoriteColorStats.percentage : '-', color: 'cyan' },
+          ].map(({ title, value, color }) => (
+            <div key={title} className={`bg-gradient-to-br from-${color}-50 to-${color}-100 rounded-lg p-4 shadow-md`}>
+              <h3 className={`text-sm text-${color}-600 mb-1 font-medium`}>{title}</h3>
+              <p className={`text-2xl font-bold text-${color}-900`}>{value}</p>
             </div>
-          </div>
-
-          <div className="bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-xl p-6 shadow-sm">
-            <h3 className="text-sm text-cyan-600 mb-2 font-medium">Favorite Color</h3>
-            {favoriteColorStats && (
-              <div className="flex items-center gap-2">
-                <div 
-                  className="w-4 h-4 rounded-full"
-                  style={{ backgroundColor: favoriteColorStats.color }}
-                />
-                <p className="text-3xl font-bold text-cyan-900">
-                  {favoriteColorStats.percentage}%
-                </p>
-              </div>
-            )}
-          </div>
+          ))}
         </div>
 
-        <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-6 mb-8 shadow-sm">
-          <h3 className="text-lg font-semibold mb-4">Recent Performance</h3>
+        <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-4 mb-6 shadow-md">
+          <h3 className="text-lg font-semibold mb-2">Recent Performance</h3>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={recentGames} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
@@ -287,7 +233,7 @@ export function PlayerStats({ player, games, players, onClose }: PlayerStatsProp
                 game.winnerId === player.id 
                   ? 'bg-gradient-to-br from-green-50 to-green-100' 
                   : 'bg-gradient-to-br from-gray-50 to-gray-100'
-              } shadow-sm`}
+              } shadow-md`}
             >
               <div className="flex justify-between items-center mb-2">
                 <span className="text-sm text-gray-600">{game.date}</span>
