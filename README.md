@@ -27,7 +27,6 @@ Catan Leaderboard is a modern web application designed to track and manage playe
   - Track individual player statistics
   - View player history and performance trends
 
-**[Player Stats]**
 <a href="https://gyazo.com/0c2e02dc800ef59ce0a50e93018d6b9b"><img src="https://i.gyazo.com/0c2e02dc800ef59ce0a50e93018d6b9b.png" alt="Image from Gyazo" width="639"/></a>
 
 - **Game Tracking**
@@ -35,7 +34,6 @@ Catan Leaderboard is a modern web application designed to track and manage playe
   - Track victory points, longest road, and largest army achievements
   - Log resource collection and trading statistics
 
-**[Recent Games]**
 <a href="https://gyazo.com/387c201735d7e5cac1a8016c408aede8"><img src="https://i.gyazo.com/387c201735d7e5cac1a8016c408aede8.png" alt="Image from Gyazo" width="631"/></a>
 
 - **Leaderboard System**
@@ -48,7 +46,6 @@ Catan Leaderboard is a modern web application designed to track and manage playe
   - Player performance comparisons
   - Game duration and outcome analysis
  
-**[Game History]**
 <a href="https://gyazo.com/5ade8979f631462e0644a6fe2b02a150"><img src="https://i.gyazo.com/5ade8979f631462e0644a6fe2b02a150.png" alt="Image from Gyazo" width="855"/></a>
 
 ## 🛠 Technologies Used
