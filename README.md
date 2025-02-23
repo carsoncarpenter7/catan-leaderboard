@@ -133,7 +133,6 @@ GET /api/games/:id
 PUT /api/games/:id
 ```
 
-For detailed API documentation, visit our [API Documentation](https://github.com/yourusername/catan-leaderboard/wiki/API-Documentation).
 
 ## 🤝 Contributing Guidelines
 
@@ -154,16 +153,5 @@ Please ensure your PR:
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 📸 Screenshots
-
-### Dashboard
-![Dashboard](https://images.unsplash.com/photo-1611457194403-d3aca4cf9d11?w=1200&h=600&fit=crop)
-
-### Player Profile
-![Player Profile](https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=1200&h=600&fit=crop)
-
-### Tournament View
-![Tournament](https://images.unsplash.com/photo-1543286386-2e659306cd6c?w=1200&h=600&fit=crop)
 
 ## 📞 Contact Informat
