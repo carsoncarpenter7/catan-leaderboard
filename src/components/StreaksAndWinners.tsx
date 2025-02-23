@@ -117,7 +117,7 @@ const StreaksAndWinners: React.FC<StreaksAndWinnersProps> = ({ games, players })
               <li key={game.id} className="flex justify-between items-center bg-white rounded-lg p-2 shadow-sm">
                 <div className="flex items-center">
                   <Trophy size={20} className="text-yellow-500 mr-2" />
-                  <span className="font-medium">{winner ? winner.username : 'Unknown Player'} - 
+                  <span className="font-medium">{winner ? winner.username : 'Unknown Player'}
                     <span className="text-xs text-gray-500 flex items-center ml-2">
                       <Clock size={16} className="mr-1" />
                       {duration}

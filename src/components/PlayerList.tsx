@@ -12,6 +12,7 @@ interface PlayerListProps {
 export function PlayerList({ players, onAddPlayer, onSelectPlayer, onToggleFavorite }: PlayerListProps) {
   const [newPlayerName, setNewPlayerName] = useState('');
   const [isAdding, setIsAdding] = useState(false);
+  const [visiblePlayers, setVisiblePlayers] = useState(6);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,6 +29,11 @@ export function PlayerList({ players, onAddPlayer, onSelectPlayer, onToggleFavor
     }
     return a.isFavorite ? -1 : 1;
   });
+
+  const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Math.min(Number(e.target.value), sortedPlayers.length);
+    setVisiblePlayers(value);
+  };
 
   return (
     <div className="bg-white rounded-2xl shadow-lg p-6">
@@ -73,47 +79,51 @@ export function PlayerList({ players, onAddPlayer, onSelectPlayer, onToggleFavor
         </form>
       )}
 
-      {/* Scrollable Player List */}
-      <div className="max-h-60 overflow-y-auto">
-        <div className="space-y-2">
-          {sortedPlayers.slice(0, 6).map(player => (
-            <div 
-              key={player.id}
-              onClick={() => onSelectPlayer(player)}
-              className="flex items-center justify-between p-2.5 hover:bg-gray-50 rounded-lg cursor-pointer group transition-colors"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-gray-500">
-                  <User size={16} />
-                </div>
-                <span className="font-medium text-gray-900">{player.username}</span>
+      <div className="space-y-2">
+        {sortedPlayers.slice(0, visiblePlayers).map(player => (
+          <div 
+            key={player.id}
+            onClick={() => onSelectPlayer(player)}
+            className="flex items-center justify-between p-2.5 hover:bg-gray-50 rounded-lg cursor-pointer group transition-colors"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-gray-500">
+                <User size={16} />
               </div>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onToggleFavorite(player.id);
-                }}
-                className={`p-1 rounded-md transition-colors ${
-                  player.isFavorite 
-                    ? 'text-amber-400 hover:bg-amber-50' 
-                    : 'text-gray-400 hover:bg-gray-100 opacity-0 group-hover:opacity-100'
-                }`}
-              >
-                <Star size={16} fill={player.isFavorite ? "currentColor" : "none"} />
-              </button>
+              <span className="font-medium text-gray-900">{player.username}</span>
             </div>
-          ))}
-        </div>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onToggleFavorite(player.id);
+              }}
+              className={`p-1 rounded-md transition-colors ${
+                player.isFavorite 
+                  ? 'text-amber-400 hover:bg-amber-50' 
+                  : 'text-gray-400 hover:bg-gray-100 opacity-0 group-hover:opacity-100'
+              }`}
+            >
+              <Star size={16} fill={player.isFavorite ? "currentColor" : "none"} />
+            </button>
+          </div>
+        ))}
       </div>
 
-      {/* Show More Players Button */}
       {sortedPlayers.length > 6 && (
-        <button
-          onClick={() => {/* Logic to show more players */}}
-          className="mt-4 w-full text-indigo-600 hover:underline"
-        >
-          Show More Players
-        </button>
+        <div className="mt-4">
+          <input
+            type="range"
+            min="6"
+            max={sortedPlayers.length}
+            value={visiblePlayers}
+            onChange={handleSliderChange}
+            className="w-full"
+          />
+          <div className="flex justify-between text-sm">
+            <span>Visible Players: {visiblePlayers}</span>
+            <span>Total Players: {sortedPlayers.length}</span>
+          </div>
+        </div>
       )}
     </div>
   );

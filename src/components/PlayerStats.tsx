@@ -220,7 +220,7 @@ export function PlayerStats({ player, games, players, onClose }: PlayerStatsProp
                   style={{ backgroundColor: favoriteColorStats.color }}
                 />
                 <p className="text-3xl font-bold text-cyan-900">
-                  {favoriteColorStats.color}
+                  {favoriteColorStats.percentage}%
                 </p>
               </div>
             )}

@@ -6,13 +6,30 @@ interface GameListProps {
   games: Game[];
   players: Player[];
   onFinishGame: (gameId: string, winnerId: string) => void;
-  onEditWinner: (gameId: string, winnerId: string) => void;
+  onEditWinner: (gameId: string, newWinnerId: string) => void;
 }
 
 export function GameList({ games, players, onFinishGame, onEditWinner }: GameListProps) {
   const [editingGameId, setEditingGameId] = useState<string | null>(null);
   const [filterStatus, setFilterStatus] = useState<'all' | 'completed' | 'in-progress'>('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(0);
+  const gamesPerPage = 5;
+
+  const totalPages = Math.ceil(games.length / gamesPerPage);
+  const displayedGames = games.slice(currentPage * gamesPerPage, (currentPage + 1) * gamesPerPage);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages - 1) {
+      setCurrentPage(prev => prev + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage(prev => prev - 1);
+    }
+  };
 
   const getPlayerName = (playerId: string) => {
     const player = players.find(p => p.id === playerId);
@@ -84,7 +101,7 @@ export function GameList({ games, players, onFinishGame, onEditWinner }: GameLis
       
       {/* Games List */}
       <div className="space-y-4">
-        {filteredGames.map((game, index) => (
+        {displayedGames.map((game, index) => (
           <div 
             key={game.id}
             className="border border-gray-200 rounded-xl p-5 hover:bg-gray-50 transition-all duration-200 shadow-sm hover:shadow-md"
@@ -224,6 +241,13 @@ export function GameList({ games, players, onFinishGame, onEditWinner }: GameLis
               : 'No games yet'}
           </div>
         )}
+      </div>
+
+      {/* Pagination Controls */}
+      <div className="flex justify-between mt-4">
+        <button onClick={handlePreviousPage} disabled={currentPage === 0} className="text-indigo-600 hover:underline disabled:opacity-50">Previous</button>
+        <span className="text-gray-600">Page {currentPage + 1} of {totalPages}</span>
+        <button onClick={handleNextPage} disabled={currentPage === totalPages - 1} className="text-indigo-600 hover:underline disabled:opacity-50">Next</button>
       </div>
     </div>
   );
