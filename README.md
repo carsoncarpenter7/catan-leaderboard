@@ -16,7 +16,7 @@ git push origin main
 
 Catan Leaderboard is a modern web application designed to track and manage player statistics, game results, and rankings for Settlers of Catan games. Whether you're organizing regular game nights or running tournaments, this application helps you maintain a comprehensive record of player performances and competitive standings.
 
-![Catan Leaderboard Dashboard](https://gyazo.com/6baf37e3b573e5ee894e1d652504575f)
+![Catan Leaderboard Dashboard](<a href="https://gyazo.com/6baf37e3b573e5ee894e1d652504575f"><img src="https://i.gyazo.com/6baf37e3b573e5ee894e1d652504575f.png" alt="Image from Gyazo" width="1537"/></a>)
 
 
 ## ✨ Features
